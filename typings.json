@@ -1,0 +1,7 @@
+{
+  "globalDependencies": {
+    "ip": "registry:dt/ip#0.0.0+20161128184045",
+    "nodemailer": "registry:dt/nodemailer#1.3.2+20160811111312",
+    "stripe": "registry:dt/stripe#2.0.0+20170223151516"
+  }
+}

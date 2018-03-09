@@ -1,0 +1,152 @@
+import { Injectable } from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import { Response } from '@angular/http';
+import { Headers, RequestOptions } from '@angular/http';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import { Http } from '@angular/http';
+
+/**
+ * Import local file
+ */
+import { ApiConstant } from '../shared/api-constant';
+import { ApiErrorConstant } from '../shared/api-error-constant';
+
+@Injectable()
+export class allServices {
+
+  errMsg: any;
+  data:any;
+
+  constructor(public _http: Http) {
+    this.errMsg = {};
+  }
+
+/**
+ * Reset password api call
+ */
+  public sendMessage(resetCredentials){
+    resetCredentials = JSON.stringify(resetCredentials);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(ApiConstant.MY_POSTING_DETAIL, resetCredentials, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
+    public bookingRoom(resetCredentials){
+    resetCredentials = JSON.stringify(resetCredentials);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(ApiConstant.SEEKER_SEARCH, resetCredentials, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
+   public inviteRequest(resetCredentials){
+    resetCredentials = JSON.stringify(resetCredentials);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(ApiConstant.INVITE_REQUEST, resetCredentials, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
+   public inviteuserdetailsRequest(resetCredentials){
+    resetCredentials = JSON.stringify(resetCredentials);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(ApiConstant.INVITE_USER_DETAILS, resetCredentials, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
+   public inviteacceptRequest(resetCredentials){
+    resetCredentials = JSON.stringify(resetCredentials);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(ApiConstant.INVITE_REQUEST_CONFIRMATION, resetCredentials, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
+   public inviterejectRequest(resetCredentials){
+    resetCredentials = JSON.stringify(resetCredentials);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(ApiConstant.INVITE_REQUEST_CONFIRMATION, resetCredentials, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
+
+
+   public addwishlistData(resetCredentials){
+    resetCredentials = JSON.stringify(resetCredentials);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(ApiConstant.ADDWISHLIST_DATA, resetCredentials, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
+
+ public wishlistDetail(resetCredentials){
+    resetCredentials = JSON.stringify(resetCredentials);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(ApiConstant.WISHLIST_DETAIL, resetCredentials, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
+
+  public deletewishlistData(resetCredentials){
+    resetCredentials = JSON.stringify(resetCredentials);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(ApiConstant.DELETE_WISHLIST_DETAIL, resetCredentials, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
+
+   public viewUserprofileDetail(resetCredentials){
+    resetCredentials = JSON.stringify(resetCredentials);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(ApiConstant.VIEW_USER_PROFILE_DETAIL, resetCredentials, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
+
+  onload(data){
+     return this._http.get('assets/data/country.json')
+        .map(this.processDatas, this);
+
+  }
+
+    processDatas(data: any) {
+    // just some good 'ol JS fun with objects and arrays
+    // build up the data by linking speakers to sessions
+   this.data = data.json();
+  //  console.log(this.data.country )
+   
+
+    return this.data;
+  }
+
+  /**
+ * Parse data from json
+ */
+  private extractData(res: Response){
+    let body = res.json();
+    console.log("Body : ", body);
+    return body || { };
+  }
+
+/**
+ * Error handling
+ */
+  private handleError(error: Response | any){
+    let errMsg: string;
+    let errorBody = JSON.parse(error._body);
+    if(errorBody.statusCode == 404){
+      errMsg = ApiErrorConstant.RESET_PASSWORD_FAIL;
+    }else{
+      errMsg = ApiErrorConstant.DEFAULT_ERROR;
+    }
+    return Observable.throw(errMsg);
+  }
+}
